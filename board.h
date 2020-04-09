@@ -1,4 +1,6 @@
-#include<stdio.h>
-#include<stdlib.h>
+#ifdef BOARD
+#define BOARD
 
-printf("Hello Worlds");
+char Board(int time);
+
+#endif
