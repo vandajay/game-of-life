@@ -1,11 +1,11 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<board.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-typedec struct Board {
-    int nrows;
-    int ncols;
-    char *grid;
+#include "board.h"
 
-    return grid;
+// BOARD.C
+
+Board* update_board(Board *b) {
+    return b;
 }
+
