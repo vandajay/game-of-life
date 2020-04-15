@@ -12,3 +12,4 @@ board.o : board.c board.h
 
 clean :
 	rm *.out
+	rm *.o
