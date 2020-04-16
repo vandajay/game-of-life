@@ -11,5 +11,4 @@ board.o : board.c board.h
 	$(CC) $(CFLAGS) -c board.c
 
 clean :
-	rm *.out
-	rm *.o
+	rm *.out *.o

@@ -9,6 +9,11 @@ typedef struct Board {
     char *grid;
 } Board;
 
-Board* update_board(Board *);
+int set_dim(Board *);
+
+int initialize_board(Board *);
+
+void update_board(Board *);
+
 
 #endif
