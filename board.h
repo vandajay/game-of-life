@@ -13,7 +13,7 @@ int set_dim(Board *);
 
 int initialize_board(Board *);
 
-void update_board(Board *);
+//void update_board(Board *);
 
 
 #endif

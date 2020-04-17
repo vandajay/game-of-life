@@ -7,7 +7,7 @@
 #define TIMES 1
 // CONWAY.C
 
-void count_colors(Board *);
+int count_colors(Board *);
 
 int main(void) {
     Board *bptr;
@@ -19,19 +19,43 @@ int main(void) {
     int steps = 0;
 
     do {
-        set_dim(bptr);
-        printf("rows=%d cols=%d", bptr->nrows, bptr->ncols);
+        printf("\nBEGIN LOOP\n");
+        q = set_dim(bptr);
+        printf("q=%d\n", q);
+        printf("rows=%d cols=%d\n", bptr->nrows, bptr->ncols);
 
-		initialize_board(bptr);
-		
-        scanf("%d", &steps);
-		
-		for(int i = 0; i < steps; i++) {
-            update_board(bptr);
+        bptr->grid = (char *)malloc(bptr->nrows * bptr->ncols * sizeof(char));
+
+	    for(int i=0; i < bptr->nrows * bptr->ncols; i++) {
+		    *(bptr->grid+i) = i;
+    	}
+
+        printf("EOF=%d\n", EOF);
+        if (q != EOF) {
+            q = scanf("%d", &steps);
         }
 
-        count_colors(bptr);
-        
+	    printf("steps=%d\n", steps);
+	    
+		q = initialize_board(bptr);
+
+        printf("%s\n", bptr->grid);
+
+//        if (q != EOF) {
+//            if (steps != 0) {
+//                printf("**updating board**\n");
+//		        for(int i = 0; i < steps; i++) {
+//                    update_board(bptr);
+//                }
+//            } else {
+//                q = EOF;
+//            }
+//        }
+
+//        if (q != EOF) {
+//            q = count_colors(bptr);
+//        }
+       printf("\nEND LOOP\n"); 
     } while (q != EOF);
 
 
@@ -39,7 +63,11 @@ int main(void) {
 
     free(bptr);
     free(bptr->grid);
+
+    printf("END CONWAY.C\n");
+    return 0;
 }
 
-void count_colors(Board *b) {
+int count_colors(Board *b) {
+    return 0;
 }
