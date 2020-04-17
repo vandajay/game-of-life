@@ -3,8 +3,6 @@
 
 #include "board.h" // quotes for custom header
 
-#define DIM 2
-#define TIMES 1
 // CONWAY.C
 
 int count_colors(Board *);
@@ -32,16 +30,19 @@ int main(void) {
 
 	    if (q != EOF) {
 		    q = initialize_board(bptr);
-            printf("grid=%s\n", bptr->grid);
+            printf("START grid=%s\n", bptr->grid);
         }
 
         if (q != EOF && steps != 0) {
 		    for(int i = 0; i < steps; i++)
                 update_board(bptr);
+            printf("NEW grid=%s\n", bptr->grid);
         } 
         else {
             q = EOF;
         }
+
+        
 
         if (q != EOF) {
             q = count_colors(bptr);

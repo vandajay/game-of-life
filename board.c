@@ -50,7 +50,6 @@ int initialize_board(Board *b) {
 }
 
 void update_board(Board *b) { // Better NOT to use prototypes for blank functions...
-    printf("**updating board**\n");
 
     char temp[b->nrows][b->ncols];
 
@@ -62,98 +61,136 @@ void update_board(Board *b) { // Better NOT to use prototypes for blank function
 
     for(int r = 0; r < b->nrows; r++) {
         for(int c = 0; c < b->ncols; c++) {
-            printf("[%d][%d]\n", r, c);
+            printf("%c", *(b->grid + r * b->ncols + c));
+        }
+    }
+
+
+    for(int r = 0; r < b->nrows; r++) {
+        for(int c = 0; c < b->ncols; c++) {
+            printf("\n[%d][%d]\n", r, c);
             int wcnt = 0;
             int bcnt = 0;
-            int xcnt = 0; 
+            int xcnt = 0;
 
-            // Count types surrounding position 
-            if(*(b->grid + ((r-1) % b->nrows) * b->ncols + ((c-1) % b->ncols)) == 'w') {
-                printf("%c", *(b->grid + ((r-1) % b->nrows) * b->ncols + ((c-1) % b->ncols)));
+            int mrow = 0;
+            int mcol = 0;
+
+
+            // printf("-1 mod 5= %d\n", (-1/5)*5+(-1%5));
+
+
+            // Count types surrounding position
+            //
+            // row - 1, col - 1
+            mrow = ((r-1) % b->nrows) < 0 ? (((r-1) % b->nrows) + b->nrows) : ((r-1) % b->nrows);
+            mcol = ((c-1) % b->ncols) < 0 ? (((c-1) % b->ncols) + b->ncols) : ((c-1) % b->ncols);
+            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 wcnt++;
-            } else if (*(b->grid + ((r-1) % b->nrows) * b->ncols + ((c-1) % b->ncols)) == 'b') {
-                printf("%c", *(b->grid + ((r-1) % b->nrows) * b->ncols + ((c-1) % b->ncols)));
+            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 bcnt++;
             } else {
-                printf("%c", *(b->grid + ((r-1) % b->nrows) * b->ncols + ((c-1) % b->ncols)));
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
-            if(*(b->grid + ((r-1) % b->nrows) * b->ncols + ((c) % b->ncols)) == 'w') {
-                printf("%c", *(b->grid + ((r-1) % b->nrows) * b->ncols + ((c) % b->ncols)));
+            // row - 1, col
+            mrow = ((r-1) % b->nrows) < 0 ? (((r-1) % b->nrows) + b->nrows) : ((r-1) % b->nrows);
+            mcol = ((c) % b->ncols) < 0 ? (((c) % b->ncols) + b->ncols) : ((c) % b->ncols);
+            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 wcnt++;
-            } else if (*(b->grid + ((r-1) % b->nrows) * b->ncols + ((c) % b->ncols)) == 'b') {
-                printf("%c", *(b->grid + ((r-1) % b->nrows) * b->ncols + ((c) % b->ncols)));
+            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 bcnt++;
             } else {
-                printf("%c", *(b->grid + ((r-1) % b->nrows) * b->ncols + ((c) % b->ncols)));
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
-            if(*(b->grid + ((r-1) % b->nrows) * b->ncols + ((c+1) % b->ncols)) == 'w') {
+            // row - 1, col + 1
+            mrow = ((r-1) % b->nrows) < 0 ? (((r-1) % b->nrows) + b->nrows) : ((r-1) % b->nrows);
+            mcol = ((c+1) % b->ncols) < 0 ? (((c+1) % b->ncols) + b->ncols) : ((c+1) % b->ncols);
+            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
+                printf("%c,", *(b->grid + (mrow) * b->ncols + (mcol)));
+                wcnt++;
+            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
                 printf("%c,", *(b->grid + ((r-1) % b->nrows) * b->ncols + ((c+1) % b->ncols)));
-                wcnt++;
-            } else if (*(b->grid + ((r-1) % b->nrows) * b->ncols + ((c+1) % b->ncols)) == 'b') {
-                printf("%c,", *(b->grid + ((r-1) % b->nrows) * b->ncols + ((c+1) % b->ncols)));
                 bcnt++;
             } else {
-                printf("%c,", *(b->grid + ((r-1) % b->nrows) * b->ncols + ((c+1) % b->ncols)));
+                printf("%c,", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
-            if(*(b->grid + ((r) % b->nrows) * b->ncols + ((c-1) % b->ncols)) == 'w') {
+            // row, col - 1
+            mrow = ((r) % b->nrows) < 0 ? (((r) % b->nrows) + b->nrows) : ((r) % b->nrows);
+            mcol = ((c-1) % b->ncols) < 0 ? (((c-1) % b->ncols) + b->ncols) : ((c-1) % b->ncols);
+            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
+                wcnt++;
+            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
                 printf("%c", *(b->grid + ((r) % b->nrows) * b->ncols + ((c-1) % b->ncols)));
-                wcnt++;
-            } else if (*(b->grid + ((r) % b->nrows) * b->ncols + ((c+1) % b->ncols)) == 'b') {
-                printf("%c", *(b->grid + ((r) % b->nrows) * b->ncols + ((c-1) % b->ncols)));
                 bcnt++;
             } else {
-                printf("%c", *(b->grid + ((r) % b->nrows) * b->ncols + ((c-1) % b->ncols)));
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
-            if(*(b->grid + ((r) % b->nrows) * b->ncols + ((c+1) % b->ncols)) == 'w') {
-                printf("%c,", *(b->grid + ((r) % b->nrows) * b->ncols + ((c+1) % b->ncols)));
+            // row, col + 1
+            mrow = ((r) % b->nrows) < 0 ? (((r) % b->nrows) + b->nrows) : ((r) % b->nrows);
+            mcol = ((c+1) % b->ncols) < 0 ? (((c+1) % b->ncols) + b->ncols) : ((c+1) % b->ncols);
+            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
+                printf("%c,", *(b->grid + (mrow) * b->ncols + (mcol)));
                 wcnt++;
-            } else if (*(b->grid + ((r) % b->nrows) * b->ncols + ((c+1) % b->ncols)) == 'b') {
-                printf("%c,", *(b->grid + ((r) % b->nrows) * b->ncols + ((c+1) % b->ncols)));
+            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
+                printf("%c,", *(b->grid + (mrow) * b->ncols + (mcol)));
                 bcnt++;
             } else {
-                printf("%c,", *(b->grid + ((r) % b->nrows) * b->ncols + ((c+1) % b->ncols)));
+                printf("%c,", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
-
-            if(*(b->grid + ((r+1) % b->nrows) * b->ncols + ((c-1) % b->ncols)) == 'w') {
-                printf("%c", *(b->grid + ((r+1) % b->nrows) * b->ncols + ((c-1) % b->ncols)));
+            // row + 1, col - 1
+            mrow = ((r+1) % b->nrows) < 0 ? (((r+1) % b->nrows) + b->nrows) : ((r+1) % b->nrows);
+            mcol = ((c-1) % b->ncols) < 0 ? (((c-1) % b->ncols) + b->ncols) : ((c-1) % b->ncols);
+            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 wcnt++;
-            } else if (*(b->grid + ((r+1) % b->nrows) * b->ncols + ((c-1) % b->ncols)) == 'b') {
-                printf("%c", *(b->grid + ((r+1) % b->nrows) * b->ncols + ((c-1) % b->ncols)));
+            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 bcnt++;
             } else {
-                printf("%c", *(b->grid + ((r+1) % b->nrows) * b->ncols + ((c-1) % b->ncols)));
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
-            if(*(b->grid + ((r+1) % b->nrows) * b->ncols + ((c) % b->ncols)) == 'w') {
-                printf("%c", *(b->grid + ((r+1) % b->nrows) * b->ncols + ((c) % b->ncols)));
+            // row + 1, col
+            mrow = ((r+1) % b->nrows) < 0 ? (((r+1) % b->nrows) + b->nrows) : ((r+1) % b->nrows);
+            mcol = ((c) % b->ncols) < 0 ? (((c) % b->ncols) + b->ncols) : ((c) % b->ncols);
+            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 wcnt++;
-            } else if (*(b->grid + ((r+1) % b->nrows) * b->ncols + ((c) % b->ncols)) == 'b') {
-                printf("%c", *(b->grid + ((r+1) % b->nrows) * b->ncols + ((c) % b->ncols)));
+            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 bcnt++;
             } else {
-                printf("%c", *(b->grid + ((r+1) % b->nrows) * b->ncols + ((c) % b->ncols)));
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
-            if(*(b->grid + ((r+1) % b->nrows) * b->ncols + ((c+1) % b->ncols)) == 'w') {
-                printf("%c", *(b->grid + ((r+1) % b->nrows) * b->ncols + ((c+1) % b->ncols)));
+            // row + 1, col + 1
+            mrow = ((r+1) % b->nrows) < 0 ? (((r+1) % b->nrows) + b->nrows) : ((r+1) % b->nrows);
+            mcol = ((c+1) % b->ncols) < 0 ? (((c+1) % b->ncols) + b->ncols) : ((c+1) % b->ncols);
+            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 wcnt++;
-            } else if (*(b->grid + ((r+1) % b->nrows) * b->ncols + ((c+1) % b->ncols)) == 'b') {
-                printf("%c", *(b->grid + ((r+1) % b->nrows) * b->ncols + ((c+1) % b->ncols)));
+            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 bcnt++;
             } else {
-                printf("%c", *(b->grid + ((r+1) % b->nrows) * b->ncols + ((c+1) % b->ncols)));
+                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
@@ -169,9 +206,9 @@ void update_board(Board *b) { // Better NOT to use prototypes for blank function
                     temp[r][c] = *(b->grid + r * b->ncols + c);
                 }
             } else if (*(b->grid + r * b->ncols + c) == 'x') { // Check for Birth
-                if (wcnt == 3) {
+                if (wcnt == 3 && wcnt + bcnt < 4) {
                     temp[r][c] = 'w';
-                } else if (bcnt == 3) {
+                } else if (bcnt == 3 && wcnt + bcnt < 4) {
                     temp[r][c] = 'b';
                 } else {
                     temp[r][c] = 'x';
@@ -180,8 +217,12 @@ void update_board(Board *b) { // Better NOT to use prototypes for blank function
             printf("%c->%c\n", *(b->grid + r * b->ncols + c), temp[r][c]);
         }
     }
-    printf("grid=%s\n", b->grid);
-    printf("temp=%s\n", *temp);
+
+    for(int r = 0; r < b->nrows; r++) {
+        for(int c = 0; c < b->ncols; c++) {
+            *(b->grid + r * b->ncols + c) = temp[r][c];
+        }
+    }
 
     printf("**END updating board**\n");
 }
