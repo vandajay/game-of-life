@@ -5,8 +5,6 @@
 
 // CONWAY.C
 
-int count_colors(Board *);
-
 int main(void) {
     Board *bptr;
     bptr = (Board *)malloc(sizeof(Board));
@@ -16,7 +14,13 @@ int main(void) {
     int q = EOF + 1;
     int steps = 0;
 
+    int wcnt = 0;
+    int bcnt = 0;
+
     do {
+        wcnt = 0;
+        wcnt = 0;
+
         printf("\nBEGIN LOOP\n");
 
         q = set_dim(bptr);
@@ -45,19 +49,22 @@ int main(void) {
         
 
         if (q != EOF) {
-            q = count_colors(bptr);
+            for(int r = 0; r < bptr->nrows; r++) {
+                for(int c = 0; c < bptr->ncols; c++) {
+                    if(*(bptr->grid + r * bptr->ncols + c) == 'w')
+                        wcnt++;
+                    else if(*(bptr->grid + r * bptr->ncols + c) == 'b')
+                        bcnt++;
+                }
+            }
         }
 
-       printf("\nEND LOOP\n"); 
+       printf("white: %d, blue: %d", wcnt, bcnt); 
     } while (q != EOF);
 
     free(bptr);
     free(bptr->grid);
 
     printf("END CONWAY.C\n");
-    return 0;
-}
-
-int count_colors(Board *b) {
     return 0;
 }
