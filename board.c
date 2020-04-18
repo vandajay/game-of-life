@@ -3,19 +3,16 @@
 
 #include "board.h"
 
-int set_dim(Board *b) {
-    printf("SET DIM\n");
-    int q = EOF + 1;
+void set_dim(Board *b) {
     int cnt = 1;
 	
     for(int i=0; i < 2; i++) {
         if (cnt % 2 != 0) {
-            q = scanf("%d", &b->nrows);
+            scanf("%d", &b->nrows);
             cnt++;
         } else {
-            q = scanf("%d", &b->ncols);
+            scanf("%d", &b->ncols);
         }
-        printf("x=%d y=%d\n", b->nrows, b->ncols);
     }
     
     b->grid = (char *)malloc(b->nrows * b->ncols * sizeof(char));
@@ -23,206 +20,182 @@ int set_dim(Board *b) {
     for(int i=0; i < b->nrows * b->ncols; i++) {
 		*(b->grid+i) = i;
     }
-
-	printf("SET DIM END\n");
-    return q;
 }
 
 
-int initialize_board(Board *b) {
-    printf("INITIALIZE BOARD\n");
-	int q = EOF + 1;
-
+void initialize_board(Board *b) {
     char ch = 'x';
 
     for (int r = 0; r < b->nrows; r++) {
         for (int c = 0; c < b->ncols; c++) {
-            q = scanf("%c", &ch);
+            scanf("%c", &ch);
             while (ch == ' ' || ch == '\n') {
-                q = scanf("%c", &ch);
+                scanf("%c", &ch);
             }
             *(b->grid + r * b->ncols + c) = ch;
         }
     }
-
-    printf("END INITIALIZE BOARD\n");
-    return q;
 }
 
 void update_board(Board *b) { // Better NOT to use prototypes for blank functions...
-
-    char temp[b->nrows][b->ncols];
+    Board *temp;
+    temp = (Board *)malloc(sizeof(Board));
+    temp->nrows = b->nrows;
+    temp->ncols = b->ncols;
+    temp->grid = (char *)malloc(b->nrows * b->ncols * sizeof(char));
 
     for(int r = 0; r < b->nrows; r++) {
         for(int c = 0; c < b->ncols; c++) {
-            temp[r][c] = '.';
+            *(temp->grid + r * temp->ncols + c) = '.'; 
         }
     }
 
     for(int r = 0; r < b->nrows; r++) {
         for(int c = 0; c < b->ncols; c++) {
-            printf("%c", *(b->grid + r * b->ncols + c));
-        }
-    }
-
-
-    for(int r = 0; r < b->nrows; r++) {
-        for(int c = 0; c < b->ncols; c++) {
-            printf("\n[%d][%d]\n", r, c);
             int wcnt = 0;
             int bcnt = 0;
             int xcnt = 0;
+            
+            int minrow = ((r-1) % b->nrows) < 0 ? (((r-1) % b->nrows) + b->nrows) : ((r-1) % b->nrows);
+            int row = ((r) % b->nrows) < 0 ? (((r) % b->nrows) + b->nrows) : ((r) % b->nrows);
+            int plusrow = ((r+1) % b->nrows) < 0 ? (((r+1) % b->nrows) + b->nrows) : ((r+1) % b->nrows);
 
-            int mrow = 0;
-            int mcol = 0;
+            int mincol = ((c-1) % b->ncols) < 0 ? (((c-1) % b->ncols) + b->ncols) : ((c-1) % b->ncols);
+            int col = ((c) % b->ncols) < 0 ? (((c) % b->ncols) + b->ncols) : ((c) % b->ncols);
+            int pluscol = ((c+1) % b->ncols) < 0 ? (((c+1) % b->ncols) + b->ncols) : ((c+1) % b->ncols);
+
+            printf("minrow=%d, row=%d, plusrow=%d\n", minrow, row, plusrow);
+            printf("mincol=%d, col=%d, pluscol=%d\n\n", mincol, col, pluscol);
 
 
-            // printf("-1 mod 5= %d\n", (-1/5)*5+(-1%5));
+            char pos = *(b->grid + r * b->ncols + c);
+
+            char nw = *(b->grid + (minrow) * b->ncols + (mincol));
+            char n = *(b->grid + (minrow) * b->ncols + (col));
+            char ne = *(b->grid + (minrow) * b->ncols + (pluscol));
+            char w = *(b->grid + (row) * b->ncols + (mincol));
+            char e = *(b->grid + (row) * b->ncols + (pluscol));
+            char sw = *(b->grid + (plusrow) * b->ncols + (mincol));
+            char s = *(b->grid + (plusrow) * b->ncols + (col));
+            char se = *(b->grid + (plusrow) * b->ncols + (pluscol));
+
+            printf("nw=%c, n=%c, ne=%c\n", nw, n, ne);
+            printf("w=%c, e=%c\n", w, e);
+            printf("sw=%c, s=%c, se=%c\n\n", sw, s, se);
+
 
 
             // Count types surrounding position
             //
             // row - 1, col - 1
-            mrow = ((r-1) % b->nrows) < 0 ? (((r-1) % b->nrows) + b->nrows) : ((r-1) % b->nrows);
-            mcol = ((c-1) % b->ncols) < 0 ? (((c-1) % b->ncols) + b->ncols) : ((c-1) % b->ncols);
-            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
+            // NW
+            if(nw == 'w') {
                 wcnt++;
-            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
+            } else if (nw == 'b') {
                 bcnt++;
             } else {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
             // row - 1, col
-            mrow = ((r-1) % b->nrows) < 0 ? (((r-1) % b->nrows) + b->nrows) : ((r-1) % b->nrows);
-            mcol = ((c) % b->ncols) < 0 ? (((c) % b->ncols) + b->ncols) : ((c) % b->ncols);
-            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
+            // N
+            if(n == 'w') {
                 wcnt++;
-            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
+            } else if (n == 'b') {
                 bcnt++;
             } else {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
             // row - 1, col + 1
-            mrow = ((r-1) % b->nrows) < 0 ? (((r-1) % b->nrows) + b->nrows) : ((r-1) % b->nrows);
-            mcol = ((c+1) % b->ncols) < 0 ? (((c+1) % b->ncols) + b->ncols) : ((c+1) % b->ncols);
-            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
-                printf("%c,", *(b->grid + (mrow) * b->ncols + (mcol)));
+            // NE
+            if(ne == 'w') {
                 wcnt++;
-            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
-                printf("%c,", *(b->grid + ((r-1) % b->nrows) * b->ncols + ((c+1) % b->ncols)));
+            } else if (ne == 'b') {
                 bcnt++;
             } else {
-                printf("%c,", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
             // row, col - 1
-            mrow = ((r) % b->nrows) < 0 ? (((r) % b->nrows) + b->nrows) : ((r) % b->nrows);
-            mcol = ((c-1) % b->ncols) < 0 ? (((c-1) % b->ncols) + b->ncols) : ((c-1) % b->ncols);
-            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
+            // W
+            if(w == 'w') {
                 wcnt++;
-            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
-                printf("%c", *(b->grid + ((r) % b->nrows) * b->ncols + ((c-1) % b->ncols)));
+            } else if (w == 'b') {
                 bcnt++;
             } else {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
             // row, col + 1
-            mrow = ((r) % b->nrows) < 0 ? (((r) % b->nrows) + b->nrows) : ((r) % b->nrows);
-            mcol = ((c+1) % b->ncols) < 0 ? (((c+1) % b->ncols) + b->ncols) : ((c+1) % b->ncols);
-            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
-                printf("%c,", *(b->grid + (mrow) * b->ncols + (mcol)));
+            // E
+            if(e == 'w') {
                 wcnt++;
-            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
-                printf("%c,", *(b->grid + (mrow) * b->ncols + (mcol)));
+            } else if (e == 'b') {
                 bcnt++;
             } else {
-                printf("%c,", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
             // row + 1, col - 1
-            mrow = ((r+1) % b->nrows) < 0 ? (((r+1) % b->nrows) + b->nrows) : ((r+1) % b->nrows);
-            mcol = ((c-1) % b->ncols) < 0 ? (((c-1) % b->ncols) + b->ncols) : ((c-1) % b->ncols);
-            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
+            // SW
+            if(sw == 'w') {
                 wcnt++;
-            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
+            } else if (sw == 'b') {
                 bcnt++;
             } else {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
             // row + 1, col
-            mrow = ((r+1) % b->nrows) < 0 ? (((r+1) % b->nrows) + b->nrows) : ((r+1) % b->nrows);
-            mcol = ((c) % b->ncols) < 0 ? (((c) % b->ncols) + b->ncols) : ((c) % b->ncols);
-            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
+            // S
+            if(s == 'w') {
                 wcnt++;
-            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
+            } else if (s == 'b') {
                 bcnt++;
             } else {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
             // row + 1, col + 1
-            mrow = ((r+1) % b->nrows) < 0 ? (((r+1) % b->nrows) + b->nrows) : ((r+1) % b->nrows);
-            mcol = ((c+1) % b->ncols) < 0 ? (((c+1) % b->ncols) + b->ncols) : ((c+1) % b->ncols);
-            if(*(b->grid + (mrow) * b->ncols + (mcol)) == 'w') {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
+            // SE
+            if(se == 'w') {
                 wcnt++;
-            } else if (*(b->grid + (mrow) * b->ncols + (mcol)) == 'b') {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
+            } else if (se == 'b') {
                 bcnt++;
             } else {
-                printf("%c", *(b->grid + (mrow) * b->ncols + (mcol)));
                 xcnt++;
             }
 
-            printf("\nw[%d] b[%d] x[%d]\n", wcnt, bcnt, xcnt);
-
             // Check for Overpopulation for white and blue
-            if(*(b->grid + r * b->ncols + c) == 'w' || *(b->grid + r * b->ncols + c) == 'b') {
+            if(pos == 'w' || pos == 'b') {
                 if((wcnt+bcnt) > 3) {
-                    temp[r][c] = 'x';
+                    *(temp->grid + r * temp->ncols + c) = 'x';
                 } else if((wcnt+bcnt) < 2) {
-                    temp[r][c] = 'x';
+                    *(temp->grid + r * temp->ncols + c) = 'x';
                 } else {
-                    temp[r][c] = *(b->grid + r * b->ncols + c);
-                }
-            } else if (*(b->grid + r * b->ncols + c) == 'x') { // Check for Birth
-                if (wcnt == 3 && wcnt + bcnt < 4) {
-                    temp[r][c] = 'w';
-                } else if (bcnt == 3 && wcnt + bcnt < 4) {
-                    temp[r][c] = 'b';
-                } else {
-                    temp[r][c] = 'x';
+                    *(temp->grid + r * temp->ncols + c) = pos;
                 }
             }
-            printf("%c->%c\n", *(b->grid + r * b->ncols + c), temp[r][c]);
+
+            // Check for Birth
+            else if (pos == 'x') { 
+                if (wcnt > bcnt && wcnt + bcnt == 3) {
+                    *(temp->grid + r * temp->ncols + c) = 'w';
+                } else if (bcnt > wcnt && wcnt + bcnt == 3) {
+                    *(temp->grid + r * temp->ncols + c) = 'b';
+                } else {
+                    *(temp->grid + r * temp->ncols + c) = 'x';
+                }
+            }
         }
     }
-
+    // Overwrite original board
     for(int r = 0; r < b->nrows; r++) {
         for(int c = 0; c < b->ncols; c++) {
-            *(b->grid + r * b->ncols + c) = temp[r][c];
+            *(b->grid + r * b->ncols + c) = *(temp->grid + r * temp->ncols + c);
         }
     }
-
-    printf("**END updating board**\n");
+    free(temp);
+    free(temp->grid);
 }
