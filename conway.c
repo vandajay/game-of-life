@@ -17,29 +17,20 @@ int main(void) {
     scanf("%d", &steps);
 	initialize_board(bptr);
 
-	for(int i = 0; i < steps; i++) {
+	for(int i = 0; i < steps; i++)
         update_board(bptr);
-        printf("\n#%d", i+1);
-        
-        // Print new board
-        for(int i = 0; i < bptr->nrows * bptr->ncols; i++) {
-        if (i % 4 != 0)
-            printf("%c ", *(bptr->grid+i));
-        else
-            printf("\n%c ", *(bptr->grid+i));
-        }
 
-        // Count life in new board
-        for(int r = 0; r < bptr->nrows; r++) {
+    for(int r = 0; r < bptr->nrows; r++) {
             for(int c = 0; c < bptr->ncols; c++) {
-                if(*(bptr->grid + r * bptr->ncols + c) == 'w')
+                char pos = *(bptr->grid + r * bptr->ncols + c);
+                if(pos == 'w')
                     wcnt++;
-                else if(*(bptr->grid + r * bptr->ncols + c) == 'b')
+                else if(pos == 'b')
                     bcnt++;
             }
         }
-        printf("\nwhite: %d, blue: %d\n", wcnt, bcnt);
-    }
+
+    printf("white: %d, blue: %d\n", wcnt, bcnt);
         
     free(bptr);
     free(bptr->grid);

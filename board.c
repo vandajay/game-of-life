@@ -64,10 +64,6 @@ void update_board(Board *b) { // Better NOT to use prototypes for blank function
             int col = ((c) % b->ncols) < 0 ? (((c) % b->ncols) + b->ncols) : ((c) % b->ncols);
             int pluscol = ((c+1) % b->ncols) < 0 ? (((c+1) % b->ncols) + b->ncols) : ((c+1) % b->ncols);
 
-            printf("minrow=%d, row=%d, plusrow=%d\n", minrow, row, plusrow);
-            printf("mincol=%d, col=%d, pluscol=%d\n\n", mincol, col, pluscol);
-
-
             char pos = *(b->grid + r * b->ncols + c);
 
             char nw = *(b->grid + (minrow) * b->ncols + (mincol));
@@ -78,12 +74,6 @@ void update_board(Board *b) { // Better NOT to use prototypes for blank function
             char sw = *(b->grid + (plusrow) * b->ncols + (mincol));
             char s = *(b->grid + (plusrow) * b->ncols + (col));
             char se = *(b->grid + (plusrow) * b->ncols + (pluscol));
-
-            printf("nw=%c, n=%c, ne=%c\n", nw, n, ne);
-            printf("w=%c, e=%c\n", w, e);
-            printf("sw=%c, s=%c, se=%c\n\n", sw, s, se);
-
-
 
             // Count types surrounding position
             //
