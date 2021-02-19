@@ -30,7 +30,15 @@ int main(void) {
             }
         }
 
-    printf("white: %d, blue: %d\n", wcnt, bcnt);
+    // Print new board
+    for(int i = 0; i < bptr->nrows * bptr->ncols; i++) {
+        if (i % bptr->ncols != 0)
+             printf("%c ", *(bptr->grid+i));
+        else
+            printf("\n%c ", *(bptr->grid+i));
+    }
+
+    printf("\nwhite: %d, blue: %d\n", wcnt, bcnt);
         
     free(bptr);
     free(bptr->grid);

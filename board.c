@@ -24,7 +24,7 @@ void set_dim(Board *b) {
 
 
 void initialize_board(Board *b) {
-    char ch = 'x';
+    char ch = '.';
 
     for (int r = 0; r < b->nrows; r++) {
         for (int c = 0; c < b->ncols; c++) {
@@ -160,22 +160,22 @@ void update_board(Board *b) { // Better NOT to use prototypes for blank function
             // Check for Overpopulation for white and blue
             if(pos == 'w' || pos == 'b') {
                 if((wcnt+bcnt) > 3) {
-                    *(temp->grid + r * temp->ncols + c) = 'x';
+                    *(temp->grid + r * temp->ncols + c) = '.';
                 } else if((wcnt+bcnt) < 2) {
-                    *(temp->grid + r * temp->ncols + c) = 'x';
+                    *(temp->grid + r * temp->ncols + c) = '.';
                 } else {
                     *(temp->grid + r * temp->ncols + c) = pos;
                 }
             }
 
             // Check for Birth
-            else if (pos == 'x') { 
+            else if (pos == '.') { 
                 if (wcnt > bcnt && wcnt + bcnt == 3) {
                     *(temp->grid + r * temp->ncols + c) = 'w';
                 } else if (bcnt > wcnt && wcnt + bcnt == 3) {
                     *(temp->grid + r * temp->ncols + c) = 'b';
                 } else {
-                    *(temp->grid + r * temp->ncols + c) = 'x';
+                    *(temp->grid + r * temp->ncols + c) = '.';
                 }
             }
         }
