@@ -1,7 +1,10 @@
-# project-c-game-of-life-git
+# Game of Life in C
 
-Github component of Conway's game of life project
+Edit __world.txt__ to change starting world with spaces between each position.
 
-You will need to commit your source code for the game of life project to this repo.
+__.__ is empty position
+__w__ is a position with a white lifeform
+__b__ is a position with a blue lifeform
 
-You will be graded on having separate logical commits and decent commit messages. You should have at least 3 commits minimum -- more are heavily encouraged!
+use __./run.sh rows columns iterations__ to run the game on the command line.
+__make run__ runs game as a default 20x20 grid and for 100 iterations.
